@@ -13,6 +13,8 @@ public class Driver {
 
     private String mobile;
     private String password;
+
+    //bidirectional mapping in parent
     @OneToOne(mappedBy = "driver",cascade = CascadeType.ALL)
     Cab cab;
     @OneToMany(mappedBy = "driver",cascade = CascadeType.ALL)

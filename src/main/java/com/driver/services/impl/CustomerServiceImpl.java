@@ -52,19 +52,20 @@ public class CustomerServiceImpl implements CustomerService {
 	public TripBooking bookTrip(int customerId, String fromLocation, String toLocation, int distanceInKm) throws Exception{
 		//Book the driver with lowest driverId who is free (cab available variable is Boolean.TRUE). If no driver is available, throw "No cab available!" exception
 		//Avoid using SQL query
-List<Driver>driverList = driverRepository2.findAll();
-Driver driver =null;
-for (Driver currDriver : driverList){
-	if (currDriver.getCab().isAvailable()){
+      List<Driver>driverList = driverRepository2.findAll(); //find all drivers
+   Driver driver =null;
+   for (Driver currDriver : driverList){
+	if (currDriver.getCab().isAvailable()){ //if current drivers cab is available
 		if(driver ==null || currDriver.getDriverId()<driver.getDriverId()){
+			//if that current drivers Id is lower than drivers Id
 			driver = currDriver;
 		}
 	}
 }
 if (driver==null)throw new Exception("No cab available!");
 TripBooking newTripbooking = new TripBooking();
-newTripbooking.setCustomer(customerRepository2.findById(customerId).get());
-newTripbooking.setFromLocation(fromLocation);
+newTripbooking.setCustomer(customerRepository2.findById(customerId).get());//assign given customer  id set for new tripbooking
+newTripbooking.setFromLocation(fromLocation); //set location for transaction,distanceinKm
 newTripbooking.setToLocation(toLocation);
 newTripbooking.setDistanceInKm(distanceInKm);
 newTripbooking.setStatus(TripStatus.CONFIRMED);
@@ -77,7 +78,9 @@ driverRepository2.save(driver);
 
 Customer customer = customerRepository2.findById(customerId).get();
 customer.getTripBookingList().add(newTripbooking);
+customerRepository2.save(customer);
 tripBookingRepository2.save(newTripbooking);
+
 return newTripbooking;
 	}
 

@@ -16,33 +16,36 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 	@Autowired
-	AdminServiceImpl adminServiceImpl;
-
+	AdminService adminService;
+//adding admin
 	@PostMapping("/register")
 	public ResponseEntity<Void> registerAdmin(@RequestBody Admin admin){
-		adminServiceImpl.adminRegister(admin);
+		adminService.adminRegister(admin);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
+//update admin password
 	@PutMapping("/update")
 	public ResponseEntity<Admin> updateAdminPassword(@RequestParam Integer adminId, @RequestParam String password){
-Admin updatedAdmin = adminServiceImpl.updatePassword(adminId,password);
+Admin updatedAdmin = adminService.updatePassword(adminId,password); //get user with given id & update his password
 		return new ResponseEntity<>(updatedAdmin, HttpStatus.OK);
 	}
 
+//delete admin
 	@DeleteMapping("/delete")
 	public void deleteAdmin(@RequestParam Integer adminId){
-		adminServiceImpl.deleteAdmin(adminId);
+		adminService.deleteAdmin(adminId);
 	}
 
+//get customers list
 	@GetMapping("/listOfCustomers")
 	public List<Customer> listOfCustomers() {
-		return adminServiceImpl.getListOfCustomers();
+		return adminService.getListOfCustomers();
 	}
 
+//get drivers list
 	@GetMapping("/listOfDrivers")
 	public List<Driver> listOfDrivers() {
-		return adminServiceImpl.getListOfDrivers();
+		return adminService.getListOfDrivers();
 	}
 }
